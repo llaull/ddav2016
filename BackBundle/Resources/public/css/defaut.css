@@ -1,0 +1,12 @@
+div {
+    border: 1px solid red;
+}
+
+p.ab {
+    font-family: 'AbelRegular', sans-serif;
+    color: #0b3e6f;
+}
+p.ovo {
+    font-family: 'OvoRegular', sans-serif;
+    color: #1e818a;
+}
