@@ -6,20 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Artiste
+ * Video
  *
- *
- * @ORM\Entity
- * @ORM\Table(name="dda__artiste_actualite")
+ * @ORM\Table(name="dda__artiste_video")
+ * @ORM\Entity(repositoryClass="ddaBundle\ArtisteBundle\Repository\VideoRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Actualite
+class Video
 {
-    /**
-     * @Gedmo\Slug(fields={"titre"})
-     * @Doctrine\ORM\Mapping\Column(length=128, unique=true)
-     */
-    private $slug;
     /**
      * @var int
      *
@@ -28,6 +22,13 @@ class Actualite
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @Gedmo\Slug(fields={"auteur"})
+     * @Doctrine\ORM\Mapping\Column(length=128, unique=true)
+     */
+    private $slug;
+
     /**
      * @var datetime $created
      *
@@ -45,7 +46,7 @@ class Actualite
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\BackBundle\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id",nullable=false)
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
      */
     private $creator;
@@ -58,32 +59,34 @@ class Actualite
      * })
      */
     private $artiste;
+
     /**
      * @var string
-     * @ORM\Column(name="titre", type="string", length=255, nullable=false)
+     * @ORM\Column(name="auteur", type="string", length=255, nullable=true)
      */
-    private $titre;
+    private $auteur;
+
     /**
      * @var string
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     * @ORM\Column(name="date", type="string", length=255, nullable=true)
      */
-    private $image;
+    private $date;
+
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @var string
+     * @ORM\Column(name="fichierMp4", type="string", length=255, nullable=true)
      */
-    private $contenu;
+    private $fichierMp4;
     /**
-     * @var datetime $publicationDate
-     *
-     * @ORM\Column(name="publication_date", type="datetime", nullable=true)
+     * @var string
+     * @ORM\Column(name="fichierOgg", type="string", length=255, nullable=true)
      */
-    private $publicationDate;
+    private $fichierOgg;
     /**
-     * @var datetime $depublicationDate
-     *
-     * @ORM\Column(name="depublication_date", type="datetime", nullable=true)
+     * @var string
+     * @ORM\Column(name="thumbnail", type="string", length=255, nullable=true)
      */
-    private $depublicationDate;
+    private $thumbnail;
     /**
      * @var boolean
      *
@@ -95,40 +98,6 @@ class Actualite
     {
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
-        $this->publicationDate = new \DateTime();
-        $this->depublicationDate = new \DateTime();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param mixed $image
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param mixed $slug
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
     }
 
     /**
@@ -148,6 +117,23 @@ class Actualite
     }
 
     /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+
+    /**
      * @return datetime
      */
     public function getCreated()
@@ -161,6 +147,22 @@ class Actualite
     public function setCreated($created)
     {
         $this->created = $created;
+    }
+
+    /**
+     * @return datetime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param datetime $updated
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
     }
 
     /**
@@ -198,65 +200,81 @@ class Actualite
     /**
      * @return string
      */
-    public function getTitre()
+    public function getAuteur()
     {
-        return $this->titre;
+        return $this->auteur;
     }
 
     /**
-     * @param string $titre
+     * @param string $auteur
      */
-    public function setTitre($titre)
+    public function setAuteur($auteur)
     {
-        $this->titre = $titre;
+        $this->auteur = $auteur;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getContenu()
+    public function getDate()
     {
-        return $this->contenu;
+        return $this->date;
     }
 
     /**
-     * @param mixed $contenu
+     * @param string $date
      */
-    public function setContenu($contenu)
+    public function setDate($date)
     {
-        $this->contenu = $contenu;
+        $this->date = $date;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getPublicationDate()
+    public function getFichierMp4()
     {
-        return $this->publicationDate;
+        return $this->fichierMp4;
     }
 
     /**
-     * @param mixed $publicationDate
+     * @param string $fichierMp4
      */
-    public function setPublicationDate($publicationDate)
+    public function setFichierMp4($fichierMp4)
     {
-        $this->publicationDate = $publicationDate;
+        $this->fichierMp4 = $fichierMp4;
     }
 
     /**
-     * @return datetime
+     * @return string
      */
-    public function getDepublicationDate()
+    public function getFichierOgg()
     {
-        return $this->depublicationDate;
+        return $this->fichierOgg;
     }
 
     /**
-     * @param datetime $depublicationDate
+     * @param string $fichierOgg
      */
-    public function setDepublicationDate($depublicationDate)
+    public function setFichierOgg($fichierOgg)
     {
-        $this->depublicationDate = $depublicationDate;
+        $this->fichierOgg = $fichierOgg;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
+
+    /**
+     * @param string $thumbnail
+     */
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
     }
 
     /**
@@ -275,6 +293,11 @@ class Actualite
         $this->active = $active;
     }
 
+    public function __toString()
+    {
+        return $this->auteur . '-' . $this->artiste->getSlug();
+    }
+
     /**
      *
      * @ORM\PrePersist
@@ -287,26 +310,5 @@ class Actualite
         if ($this->getUpdated() === null) {
             $this->setUpdated(new \DateTime('now'));
         }
-    }
-
-    /**
-     * @return datetime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * @param datetime $updated
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-    }
-
-    public function __toString()
-    {
-        return $this->artiste->getSlug() . ' ' . $this->titre;
     }
 }
